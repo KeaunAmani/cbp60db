@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Plant CBP60 Protein Family Database</title>
+  <meta name="description" content="A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family."/>
+  <meta property="og:title" content="Plant CBP60 Protein Family Database">
+  <meta property="og:description" content="A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family.">
+  <meta property="og:image" content="/assets/favicon.png">
+  <meta name="theme-color" content="#2669ff">
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta name="viewport" content="width=900px">
+
+  <link rel="stylesheet" href="/css/master.css">
+  <link rel="stylesheet" href="/css/api.css">
+  <link rel="shortcut icon" href="/assets/favicon.png">
+  
+  <script src="/js/master.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
+  <script src="https://cdn.rawgit.com/phylocanvas/phylocanvas-quickstart/v2.8.1/phylocanvas-quickstart.js"></script>
+</head>
+
+
+<body>
+  <nav>
+    <a href="/">
+      <img src="/assets/favicon.png">
+      <p>Plant CBP60 Protein Family Database</p>
+    </a>
+    <div>
+      <a href="/">Home</a>
+      <a href="/#about">About</a>
+      <a href="/#database-visualization">Database Visualization</a>
+      <a href="/#contact">Contact</a>
+      <a href="/api">API</a>
+    </div>
+  </nav>
+  <header>
+    <div>
+      <h3>Search for other proteins</h3>
+      <span id="search">
+        <img src="/assets/search.svg">
+        <input type="text" placeholder="Search by protein, transcript, or species..." maxlength="64">
+      </span>
+    </div>
+    <div style="width: 50%;"></div>
+  </header>
+
+  <section id="api">
+    <h2>API.</h2>
+    <p>
+      All data stored within the Plant CBP60 Protein Family Database is easily accessible via our programmatic HTTP API. The following is an exhaustive list of all our endpoints and the corresponding data the endpoint retrieves. Please note that if an endpoint contains {protein-id} you will need to substitute {protein-id} with the ID of the desired transcript you wish to fetch information on. All transcript IDs are 32 characters and alphanumeric.
+    </p>
+
+    <div class="items">
+      <span>
+        <h4>GET /api/list</h4>
+        <p>Returns a map/dictionary of all database entries as well as their respective species, common name, gene, cDNA, and AlphaFold2 configuration.</p>
+        <p>Example:</p>
+<pre><code>GET /api/list
+{
+  "00a271c88820a0d72f3865a6c5f1d77c": {
+    "id": "00a271c88820a0d72f3865a6c5f1d77c",
+    "species": "Oryza rufipogon",
+    "common_name": "Brownbeard rice",
+    "gene": "ORUFI09G00060.1",
+    "transcript": "ORUFI09G00060.1",
+    "cDNA": "GCGGGGTGGAGAGTGGAGTCGACTTGGCTCCCAAGTCCACTTCCCTCCATAAAGCGAGCT CGGAGCGCAGCCACAGCAGTATAGAGCGCAAGCACAGCGACGGCGAGCAACCGCGGTGAC CGGAGAAGCGTACTACGTGTGTACCGGCGTCGGTCGATCGACGGCAATCGGCCGGATTCC GGTGTGATCGGCTCACCGGCGATATGCACACGAAGCGTCCGCTGCCGGCACAGGCGCCAC CAGCTGGGCTCGTCCTGGTGCCCGCGCCCAAGCGCCCGCATGTGGATGCTGCTGCCGGCG GCGGCGTGGCGTCGCCGCGGGGGAAGCGGCAGCTTCGCTCCGGCATGCTCGTCCTCTTCT TCGTCGCGCAAGTCAAGGAGGAGATGAGATACAACCAGCGACTTCGTCGAGTGATACGTG GAGAGAATGCTATTTCCCAGCAAAGGGCAATCCAAGCATTTGATTGTGTCTTTCAGAAAG CATTTGACAATGCCTTCCAGAAGCATCTTGATCCGATTTACCGCTCCCTTCAATCCCTTA ACAAGCGCACTGATATTCTCAGCCATGAAGTGGAACAAATCAAACATTCAAATTCTAACC ATCATGCTAATCAGCAATACAGATCAAAGGTAAATCAAGAGTCTGCTGCCATCACTGAGG AAGTGAATCAAGAACAAACAGCTGCTAGATTTGTCGCGCGTGAAGCTCAGGAGGGGCAAA GAGTTGAGTTGAGGTTCCTCAATAAGTTGAACCCTCTCGTTTTTACAAAGGAAAAAATTA CAGCGGAGGATGGTACAACTATCAAAATTGCCATAGTTAGGGATAATCAGATAATTACAT CTGGTCCACTTTCTTCTGCAAGAATTGAAATTTTGGCTCTCCATGGTAACTTTTATGATG TTGTGCCTGATAATTGGACCGAATCTGAGTTTGATCACCGCATAGTAAGTAGTTCACAAG GGCCCGCGTTAGGAGGAGTATGTCAAGTCAAGCTGAAGAATGGGGAGGCCTCTCCTTCTG ATGTATTTTTCAATATACCATCTTCAAAGACTGAAAGTGGAAGGCTCATTCTGGCAGCAA AAGTTCATACAAGTGACAATGGTGGGCTTCGAATTAAGGAAGCTGTGATGATGAATCCTG TTGTGGTGCAGGTTTACCGAAACAAACTAAATAGAAGTAGTGACCGTCCGAAGCTAAAAG ATGAAGTACATCGTTTAAAGGGAATTTCAGGAAAGGGATGCCGCACCAAATGGCTTAAAG ATAATCAAATCAACACTGTGGAAGAGTTTGTAAAGGCTTTAAATAAGGATGAAGAAAAGA TCCGCAATGATGCAGTGAATCGTTTGAAGAAACAAGCATATGATGAGCTGGATAGCATTG GCTTTGATCATGAAATGAAAAATGACTATCCGGTGATGACGCTCAGTGATGATGCTTACA TTCCCTTCACTGACACAGCACAAAATCCTCCAGATTTGCATGTTACATTTCAAGGTGCTC TGACTCAGATGGACCATGACTATGCCCAATTTGGCATTGCTGATATGCAGTGTTATACTG CACAGGCACCTGAAGGTACCTCTTATGGAGGCAACAACATGATCGGACCAGCAAATGTAC CGCAGAATGTTATTGGTGACGGCTCTATGGACATGTTTGACTGTTATGCATACATCTTTC CGGACAATGAGAACCAGAATGAGAGGCCTCATAGCTCTGCATATCCAGGACCAGTTTAAC TGAAGGCTTTGTTGCCAGCTAGTAATCTATCATGATTTCTGATTAATTTCATTCTTTATT TAGATAATGGATATTTTATTGTTTTATTCTTGATGGATGTATTACTTTCAAGAAATATTC TTGCTGTATGTATTAGCATTTGTTGATGCAGAAAATTGAACTGTACTAGTACTTATGTTT CAGAAAAAAAAACATCGACTGTTATGTTACATAATTCAACTGTTGTATCACACTACGGTT TCAGAACTCCTTCTAGAGTTCTAGTACTATTATTTACTAGTTAGCGTGCATGTTCACGGC ATCGCAAC",
+    "protein": "MHTKRPLPAQAPPAGLVLVPAPKRPHVDAAAGGGVASPRGKRQLRSGMLVLFFVAQVKEE MRYNQRLRRVIRGENAISQQRAIQAFDCVFQKAFDNAFQKHLDPIYRSLQSLNKRTDILS HEVEQIKHSNSNHHANQQYRSKVNQESAAITEEVNQEQTAARFVAREAQEGQRVELRFLN KLNPLVFTKEKITAEDGTTIKIAIVRDNQIITSGPLSSARIEILALHGNFYDVVPDNWTE SEFDHRIVSSSQGPALGGVCQVKLKNGEASPSDVFFNIPSSKTESGRLILAAKVHTSDNG GLRIKEAVMMNPVVVQVYRNKLNRSSDRPKLKDEVHRLKGISGKGCRTKWLKDNQINTVE EFVKALNKDEEKIRNDAVNRLKKQAYDELDSIGFDHEMKNDYPVMTLSDDAYIPFTDTAQ NPPDLHVTFQGALTQMDHDYAQFGIADMQCYTAQAPEGTSYGGNNMIGPANVPQNVIGDG SMDMFDCYAYIFPDNENQNERPHSSAYPGPV",
+    "conf": {
+      "use_templates": false,
+      "use_amber": false,
+      "msa_mode": "MMseqs2 (UniRef+Environmental)",
+      "model_type": "AlphaFold2-ptm",
+      "num_models": 5,
+      "num_recycles": 2,
+      "rank_by": "plddt",
+      "pair_mode": "unpaired+paired"
+    }
+  },
+.
+.
+.
+  "ffccc0612fbd55d7998bb9773a785b0f": {
+    "id": "ffccc0612fbd55d7998bb9773a785b0f",
+    "species": "Oryza rufipogon",
+    "common_name": "Brownbeard rice",
+    "gene": "ORUFI04G08310.1",
+    "transcript": "ORUFI04G08310.1",
+    "cDNA": "ATGAAGAAGGACAACATGCTTTGGAAAGCTACGGTTGAACATGCTGAACAGTGTGATCTC GAAGGCAATTGCAAACTGAAATCATATGGAGTTGAAGAGAAAGATGTTATACTCTTCTTT AACTGTGTACACGACCTCGTTGGAGCAAAATTTTGTGGTCGCTATGTTGCAAAGGACAAT TTCAATTCAGATGAGCAGGATGAAGTGAATCGTTTGAAAATACAAGCATACGATGAACTG GATAACATTGTCTTTGATCACGAAATGAAAGACAATTATCCAGTACCTTTGTCTTCAACT CTGAACACAGGACTAAATCCTCCCGATTTGCATGTTACATGTCAAGTTCAAGATACAGCT GCAGTTGAGACTGCTCATCATGCTACGTTTGCAGATGCAAATCAACTGCCTCAAACATTT CTTAACAACAATAGTGCTTGTGGGTTCATTATAGGATCAGAACAAATTCCTGTTGATCCA TCATTCTTCAATGGCTATCGAGGTAATTATCAAGCTGGTACTACGAGACAGATTGACATG ACTGCTATTGGGTACTGTATTGCTCAATCATCTGAGGCTGTAATAGCTGAAACTACTTCT GGAGGCAATAACTTGACTGGACTAATGAATATGGACGAGAATGTCAGCGATGACAGTGTT GATGCTTTCGCGTTGGTTAACAGCTGGATAAATTCCTCTCCTCCGTCGTTTAAATGA",
+    "protein": "MKKDNMLWKATVEHAEQCDLEGNCKLKSYGVEEKDVILFFNCVHDLVGAKFCGRYVAKDN FNSDEQDEVNRLKIQAYDELDNIVFDHEMKDNYPVPLSSTLNTGLNPPDLHVTCQVQDTA AVETAHHATFADANQLPQTFLNNNSACGFIIGSEQIPVDPSFFNGYRGNYQAGTTRQIDM TAIGYCIAQSSEAVIAETTSGGNNLTGLMNMDENVSDDSVDAFALVNSWINSSPPSFK",
+    "conf": {
+      "use_templates": false,
+      "use_amber": false,
+      "msa_mode": "MMseqs2 (UniRef+Environmental)",
+      "model_type": "AlphaFold2-ptm",
+      "num_models": 5,
+      "num_recycles": 12,
+      "rank_by": "plddt",
+      "pair_mode": "unpaired+paired"
+    }
+  }
+}
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /api/protein/{protein-id}</h4>
+        <p>Fetches a single entry as well as their species, gene, cDNA, and AlphaFold2 configuration.</p>
+        <p>Example:</p>
+<pre><code>GET /api/protein/feb374a731e2b22eb4e39f8e598f1660
+{
+  "id": "feb374a731e2b22eb4e39f8e598f1660"
+  "species: "Aegilops tauschii",
+  "gene": "AET5Gv20250900",
+  "transcript": "AET5Gv20250900.15",
+  "cDNA": "GCTAATTACCTGATATTTGATGGTGACTTGCTTTGGATCTAATTAGTTCTGGATGACATC TGCAGGGGAGAGTTTCAGCAAGCAACCTGACCTACTATGCAATGGCCAAACACTACATCA ATCAAATCAAGTTTTTGCTGGCTTACAGCCATCAAGAACAAACAGCTTTGACTCGGTGGA AAATGATCAGCTCATACAACGCTTCATTTCTCAGTTTTTTAGCAGTGAAGGGGCAGCGAC ACCTTTGTCGCCACGTAAGTGGGTTAAGATCAAGGCAGCATTGAAGCTAGCATCTGTAGG GCGACTCTCCAGAGCCTCTAGAAGGGGTCTGCATAGTCCCCCGGGAAGGGCAAGGCTGGT ACCAACAACATGACCCTGCTGAATAGTGTGGATAACAATTGTGATAGAACAATGTGGGGA TCAAGGATCCATCTTGATGTTGTACTCCATAATATTGATGAAGTATATAATCTAATAATC TAGTTAGTTAAAAATAGCAGTATTGTGACAGAACAATGTGTGGAGCTTGTATTCTGATCT GTTAGCAACAGTATACACAAGTAAATATATCTGGATCTTAGTTGTGACAGAACAATGTGT GGAGCTTGTATTGTCATTTGTTAGCAACAGACATATAAGTAAATATATCTATATCTTAGT TATTTATGAACACAGGAGTCAGACC",
+  "protein": "MTSAGESFSKQPDLLCNGQTLHQSNQVFAGLQPSRTNSFDSVENDQLIQRFISQFFSSEG AATPLSPRKWVKIKAALKLASVGRLSRASRRGLHSPPGRARLVPTT",
+  "conf": {
+    "use_templates": false,
+    "use_amber": false,
+    "msa_mode": "MMseqs2 (UniRef+Environmental)",
+    "model_type": "AlphaFold2-ptm",
+    "num_models": 5,
+    "num_recycles": 12,
+    "rank_by": "plddt",
+    "pair_mode": "unpaired+paired"
+  }
+}
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/cluster.json</h4>
+        <p>Fetches the 2D TM-align cluster for all entries in the database. This JSON file contains the coordinates, number of residues, and corresponding labels.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/cluster.json
+{
+  "x": [...],
+  "y": [...],
+  "sizes": [...],
+  "labels": [...]
+}
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/alignment.fas</h4>
+        <p>Fetches the FASTA alignment of all protein sequences within the database.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/alignment.fas
+>VIT_11s0206g00070_d_t01            
+--------------------------------------------------------------------------------
+------------IQE-LIF-----TDNSSWTRS--RK--F--------RIGA----------------------------
+.
+.
+.
+--------------------------------------------------------------------------------
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/phylogenetic.tree</h4>
+        <p>Fetches the phylogenetic tree file of all proteins sequences within the database in the Newick file format.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/phylogenetic.tree
+((((TRITD6Bv1G110690_d_18:0.00055,(TRITD6Bv1G110690_d_19:0.00055,(TraesCS6B02G230900_d_1:0.00055,(TRIDC6BG035590_d_7:0.00563,TRITD6Bv1G110690_d_17:0.08349)0.997:0.02182)0.000:0.00055)0.977:0.01186)0.999:0.03363,
+.
+.
+.
+(TRIDC6BG035590_d_1:0.0,TraesCS6B02G230900_d_3:0.0,TRITD6Bv1G110690_d_6:0.0):0.00055)0.000:0.00055);
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/proteins/{protein-id}/scores.json</h4>
+        <p>Fetches the scores.json file containing the max PAE, PAE matrix, pLDDT, and ptm for the predicted structure.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/proteins/ced1af5c62b4c7e354d7a1a734f43692/scores.json
+{
+  "max_pae": 31.75,
+  "pae": [...],
+  "plddt": [...],
+  "ptm": 0.75
+}
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/proteins/{protein-id}/sequence.fasta</h4>
+        <p>Fetches the sequence.fasta file for the predicted structure.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/proteins/ced1af5c62b4c7e354d7a1a734f43692/sequence.fasta
+>TRIDC5BG064000.36
+MQVWSQRLSCRSIYYEKLQMVSPRSESLVVGVHQDGQKIAVKRIYDMPGVDDKQFQNELKNLTRLRHRNIVRLVGYCHHIQEVPAIYEGKLVLAEKIHRALCLEYMSNGSLENYISDECDKYDWHTGYGMIKGICHGLKYLHTELKPPIYHLDLKPANILLDENMVPRIADFGISRLIGDERTRATKSTLGTQ  
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/proteins/{protein-id}/msa.a3m</h4>
+        <p>Fetches the msa.a3m file for the predicted structure.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/proteins/ced1af5c62b4c7e354d7a1a734f43692/msa.a3m
+#78	1
+>101
+MKVPCFLQWQEGEWEDHRSGSVWLREINGDEFTTMFLPYFGNMVQRVVSEEVEKAKFKQFSAAAATPPRSARQRSQED
+>A0A452Z0W3	148	0.742	8.726E-39	0	77	78	0	104	105
+MKVPCFLQWQEGEWEDHRSGSVWLREINGDEFTTMFLPYFGNMVQRVVSEEVEKAKFKQFSAAAATPPriqdaglagsrplsiyfsrsmasfvygRSARQRSQED
+>A0A452Z0W1	144	1.00	1.507E-37	0	68	78	0	68	141
+MKVPCFLQWQEGEWEDHRSGSVWLREINGDEFTTMFLPYFGNMVQRVVSEEVEKAKFKQFSAAAATPPR---------
+.
+.
+.
+-------------RRTMGLGVFGFRGITGEEFMTM----FSNMVRRVVSEEVEKAMFRQFSAAAAAPPRLLVGQSQ--
+>M7YSC3	79	0.431	9.688E-15	8	51	78	30	73	152
+--------WQVSKRRTIGQGVFGFREIVGEEFMTMFLSVFSRMVQRLYQDGV--------------------------
+>MGYP001107388502	59	0.404	7.698E-08	2	47	78	17	60	66
+--VGC---RQVTRtRRKTTEGLFGFRRIMEAEFMGMFLPVFGSMLQRVV------------------------------
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/proteins/{protein-id}/structure.pdb</h4>
+        <p>Fetches the structure.pdb file for the predicted structure.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/proteins/ced1af5c62b4c7e354d7a1a734f43692/structure.pdb
+  MODEL     1                                                                     
+  ATOM      1  N   MET A   1      17.125   7.130   6.731  1.00 30.27           N  
+  ATOM      2  CA  MET A   1      16.175   6.375   7.543  1.00 30.27           C  
+  ATOM      3  C   MET A   1      14.834   7.099   7.624  1.00 30.27           C  
+  .
+  .
+  .
+  ATOM   1565  NE2 GLN A 193     -15.499 -19.541  -6.965  1.00 32.09           N  
+  ATOM   1566  OE1 GLN A 193     -14.492 -19.556  -8.976  1.00 32.09           O  
+  TER    1567      ALA A   1                                                      
+  ENDMDL                                                                          
+  END                                                                             
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/proteins/{protein-id}/structure.cif</h4>
+        <p>Fetches the structure.cif file for the predicted structure.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/proteins/ced1af5c62b4c7e354d7a1a734f4369236/structure.cif
+data_TRIDC5BG064000.36
+#
+loop_
+_atom_site.group_PDB
+_atom_site.id
+_atom_site.type_symbol
+.
+.
+.
+ATOM 1564 C CD  . GLN A ? 193 ? -14.446 -19.367 -7.756  1.0 32.09 193 A 1 
+ATOM 1565 N NE2 . GLN A ? 193 ? -15.499 -19.541 -6.965  1.0 32.09 193 A 1 
+ATOM 1566 O OE1 . GLN A ? 193 ? -14.492 -19.556 -8.976  1.0 32.09 193 A 1 
+#
+</code></pre>
+      </span>
+
+      <span>
+        <h4>GET /assets/proteins/{protein-id}/structure.png</h4>
+        <p>Fetches the thumbnail image file for the predicted structure.</p>
+        <p>Example:</p>
+<pre><code>GET /assets/proteins/ced1af5c62b4c7e354d7a1a734f43692/structure.png
+<img src="/assets/proteins/ced1af5c62b4c7e354d7a1a734f43692/structure.png" height="128px" width="128px">
+</code></pre>
+      </span>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2022 All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

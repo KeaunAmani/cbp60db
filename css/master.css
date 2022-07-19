@@ -1,0 +1,202 @@
+/*Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+/*Variables*/
+:root {
+  --primary: #2669ff;
+  --primary-alt: #7054ff;
+  --secondary: #26d7ff;
+  --secondary-alt: #548dff;
+  
+  --background: #f2f4f6;
+  --background-alt: #001B50;
+  --surface: #fff;
+
+  --text-on-dark: #fff;
+  --text-on-light: #001B50;
+  /* 0px 2px 4px rgba(0,0,0,0.3) */
+  --shadow: 0px 4px 12px 0px rgba(0,0,0,.25);
+  --shadow-hov: 0px 4px 12px 0px rgba(0,0,0,.4);
+
+  --error: #ff266a;
+}
+/* Main Element Styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+::selection {
+  color: var(--text-on-dark);
+  background: #7054ffde;
+}
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 300;
+  line-height: 1.4;
+  background-color: var(--background);
+  color: var(--text-on-light);
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+p a {
+  color: inherit;
+  box-shadow: inset 0 0 0 0 #266bffbe;
+  border-bottom: solid 1px #266bffbe;
+  transition: box-shadow .4s, border-color .4s;
+}
+p a:hover, p a:active {
+  box-shadow: inset 0 -3.25em 0 0 #7054ffa6;
+  border-color: #7054ffa6;
+}
+
+
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: sticky;
+  width: 100%;
+  top: 0px;
+  z-index: 5;
+  padding: 0px 20px;
+  background-color: var(--surface);
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+}
+nav > a {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+nav > a:hover {
+  box-shadow: none;
+}
+nav > a:first-child:hover img {
+  transform: scale(1.4);
+}
+nav > a:first-child:hover p {
+  color: var(--primary);
+}
+nav img {
+  height: 2.5em;
+  width: 2.5em;
+  margin: auto 0 auto 20px;
+  border-radius: 8px;
+  transition: transform .3s;
+}
+nav > a > p {
+  margin: auto 0;
+  font-weight: 600;
+  transition: color .3s;
+}
+nav div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+nav div a {
+  height: 100%;
+  margin: auto;
+  text-align: center;
+  padding: 20px;
+  box-shadow: inset 0 0 0 0 var(--primary);
+  transition: .3s box-shadow, .3s color;
+}
+nav div a:hover {
+  box-shadow: inset 0 4px 0 0 var(--primary);
+  color: var(--primary);
+}
+
+header {
+  background: linear-gradient(120deg, #7054ffed, #266bffbd), url('/assets/background.jpg');
+  background-position: left center;
+  background-attachment: fixed;
+  background-size: cover;
+  padding: 50px 6vw;
+  color: var(--text-on-dark);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+
+footer {
+  background-color: var(--surface);
+  padding: 20px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+}
+
+
+section {
+  padding: 40px 6vw;
+}
+section > h2 {
+  border-left: solid 4px var(--primary);
+  padding-left: 16px;
+  font-weight: 700;
+  font-size: 42px;
+  margin-bottom: .7em;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  border-radius: 100px;
+  padding: .8em 2em;
+  font-weight: 700;
+  font-size: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--text-on-light);
+  transition: box-shadow .3s, background-color .3s, color .3s, transform .3s;
+}
+.btn:hover {
+  color: var(--secondary);
+  background: var(--background-alt);
+  box-shadow: var(--shadow-hov);
+}
+.btn:active {
+  transform: translateY(3px);
+}
+
+
+/* common widgets */
+#search img {
+  width: 36px;
+  height: 36px;
+  opacity: .5;
+  transition: opacity .3s;
+}
+#search {
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+  padding: .5em 1em;
+  width: 40em;
+  background: var(--surface);
+  border-radius: 100px;
+  box-shadow: var(--shadow);
+  transition: box-shadow .3s;
+  display: flex;
+}
+#search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+#search:hover, #search:focus-within {
+  box-shadow: var(--shadow-hov);
+}
+#search:hover img, #search:focus-within img {
+  opacity: .7;
+}

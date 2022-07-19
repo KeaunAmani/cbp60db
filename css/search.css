@@ -1,0 +1,47 @@
+header {
+  gap: 50px;
+}
+header div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+header h2 {
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1.58;
+}
+
+
+.results {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 50px;
+}
+.results > a {
+  background: var(--surface);
+  width: 24ch;
+  padding: 1em;
+  box-shadow: var(--shadow);
+  transition: box-shadow .3s, transform .3s;
+}
+.results > a:hover {
+  transform: scale(1.03);
+  box-shadow: var(--shadow-hov);
+}
+.results > a img {
+  width: 100%;
+  height: auto;
+}
+.results > a h4 {
+  overflow-wrap: break-word;
+}
+.results > a p {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

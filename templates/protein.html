@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Plant CBP60 Protein Family Database</title>
+  <meta name="description" content="A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family."/>
+  <meta property="og:title" content="Plant CBP60 Protein Family Database">
+  <meta property="og:description" content="A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family.">
+  <meta property="og:image" content="/assets/favicon.png">
+  <meta name="theme-color" content="#2669ff">
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta name="viewport" content="width=900px">
+
+  <link rel="stylesheet" href="/css/master.css">
+  <link rel="stylesheet" href="/css/protein.css">
+  <link rel="stylesheet" type="text/css" href="https://www.ebi.ac.uk/pdbe/pdb-component-library/css/pdbe-molstar-light-1.2.0.css">
+  <link rel="shortcut icon" href="/assets/favicon.png">
+  
+  <script src="/js/master.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
+  <script type="text/javascript" src="https://www.ebi.ac.uk/pdbe/pdb-component-library/js/pdbe-molstar-plugin-1.2.0.js"></script>
+</head>
+
+
+<body>
+  <nav>
+    <a href="/">
+      <img src="/assets/favicon.png">
+      <p>Plant CBP60 Protein Family Database</p>
+    </a>
+    <div>
+      <a href="/">Home</a>
+      <a href="/#about">About</a>
+      <a href="/#database-visualization">Database Visualization</a>
+      <a href="/#contact">Contact</a>
+      <a href="/#api">API</a>
+    </div>
+  </nav>
+  <header>
+    <div>
+      <h3>Search for other proteins</h3>
+      <span id="search">
+        <img src="/assets/search.svg">
+        <input type="text" placeholder="Search by protein, transcript, or species..." maxlength="64">
+      </span>
+    </div>
+    <div style="width: 50%;"></div>
+  </header>
+
+  <section>
+    <h1>{{.Transcript}}</h1>
+    <h3>AlphaFold2 structure prediction</h3>
+    <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; padding: 10px 0px 20px 0px;">
+      <h4>Download</h4>
+      <a class="btn" href="/assets/proteins/{{.ID}}/structure.pdb" download="{{.ID}}.pdb">PDB File</a>
+      <a class="btn" href="/assets/proteins/{{.ID}}/structure.cif" download="{{.ID}}.cif">mmCIF File</a>
+      <button class="btn" onclick="downloadPAE()">Predicted Aligned Error</button>
+      <button class="btn" onclick="downloadPLDDT()">pLDDT</button>
+      <a class="btn" href="/assets/proteins/{{.ID}}/sequence.fasta" download="{{.ID}}.fasta">FASTA</a>
+      <a class="btn" href="/assets/proteins/{{.ID}}/msa.a3m" download="{{.ID}}.a3m">MSA File</a>
+      <form action="http://lcg.rit.albany.edu/dp-bind/cgi-bin/parseform.cgi" method="POST" target=”_blank” enctype="multipart/form-data">
+        <input type="file" name="file_uploaded" style="display: none;">
+        <input type="radio" name="seq_input_method" value="paste" checked style="display: none;">
+        <textarea name="seq_pasted" style="display: none;"></textarea>
+        <input type="radio" name="encoding" value="pssm" checked style="display: none;">
+        <input type="text" name="email" value="" style="display: none;">
+        <input type="radio" name="delivery" value="link_to_file" checked style="display: none;">
+        <input class="btn" type="submit" value="DNA-Binding Residues">
+      </form>
+      <form action="http://elm.eu.org/cgimodel.py" method="POST" target=”_blank” enctype="multipart/form-data">
+        <input type="text" name="swissprotId" value="" style="display: none;">
+        <textarea name="sequence" style="display: none;"></textarea>
+        <input type="text" name="userCC" value="1" style="display: none;">
+        <input type="text" name="typedUserSpecies" value="" style="display: none;">
+        <input type="text" name="EXPECT_CUTOFF" value="100" style="display: none;">
+        <input type="text" name="fun" value="Submit" style="display: none;">
+        <input class="btn" type="submit" value="ELM Prediction" title="Eukaryotic Linear Motifs for corresponding sequence">
+      </form>
+      <script>
+        fetch(`/assets/proteins/${location.href.split("/").at(-1)}/sequence.fasta`)
+          .then(r => r.text())
+          .then(d => {
+            for (const el of document.querySelectorAll("textarea")) {
+              el.value = d.trim();
+            }
+          });
+      </script>
+    </div>
+    
+    <div class="info">
+      <h3>Information</h3>
+      <h3>AlphaFold Settings</h3>
+
+      <div>
+        <p>Gene</p>
+        <p>{{.Gene}}</p>
+        <p>Transcript</p>
+        <p>{{.Transcript}}</p>
+        <p>Source organism</p>
+        <p><em>{{.Species}}</em> {{if .CommonName}} &nbsp;({{.CommonName}}) {{end}}</p>
+        <!-- <p>UnitProt</p>
+        <p>TODO</p> -->
+        <p>Max PAE</p>
+        <p id="max-pae"></p>
+        <p>pTM-Score</p>
+        <p id="ptm-score"></p>
+        <p></p>
+        <p></p>
+        <P></P>
+        <P></P>
+        <P></P>
+        <P></P>
+      </div>
+      <div>
+        <p>use_templates</p>
+        <p>{{.Conf.UseTemplates}}</p>
+        <p>use_amber</p>
+        <p>{{.Conf.UseAmber}}</p>
+        <p>msa_mode</p>
+        <p>{{.Conf.MsaMode}}</p>
+        <p>model_type</p>
+        <p>{{.Conf.ModelType}}</p>
+        <p>num_models</p>
+        <p>{{.Conf.NumModels}}</p>
+        <p>num_recycles</p>
+        <p>{{.Conf.NumRecycles}}</p>
+        <p>rank_by</p>
+        <p>{{.Conf.RankBy}}</p>
+        <p>pair_mode</p>
+        <p>{{.Conf.PairMode}}</p>
+      </div>
+    </div>
+
+    <br>
+    <h3>cDNA Sequence</h3>
+    <p id="cDNA">{{.CDNA}}</p>
+    <br>
+    <br>
+    
+
+    <h2>Structure.</h2>
+    <div id="protein-viewer"></div>
+    <div class="plot-container">
+      <div id="pae"></div>
+      <div id="plddt"></div>
+    </div>
+
+    <h2>Similar Proteins.</h2>
+    <div class="plot-container">
+      <div id="cluster"></div>
+      <div id="similar-proteins"></div>
+    </div>
+  </section>
+  <footer>
+    <p>&copy; 2022 All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
+
+
+<script>
+  // PDBe Molstar Stuff
+  let viewerInstance = new PDBeMolstarPlugin();
+  let options = {
+    customData: {url: "/assets/proteins/"+location.href.split("/").at(-1)+"/structure.cif", format: "cif"},
+    alphafoldView: true,
+    visualStyle: "cartoon",
+    bgColor: {r:255, g:255, b:255},
+    hideCanvasControls: ["animation", "controlToggle"],
+    defaultPreset: "all-models",
+  }
+  viewerInstance.render(document.getElementById("protein-viewer"), options);
+
+  // download scores data and populate plots
+  scores = null;
+  fetch(`/assets/proteins/${location.href.split("/").at(-1)}/scores.json`)
+    .then(r => r.json())
+    .then(d => {
+      scores = d;
+      document.getElementById("max-pae").textContent = scores.max_pae;
+      document.getElementById("ptm-score").textContent = scores.ptm;
+
+      // PAE plot
+      var data = [{
+        z: scores.pae,
+        type: "heatmap",
+        // name: data.labels,
+        // text: data.labels,
+        colorscale: [
+          ['0.0', '#0d0887'],
+          ['0.11', '#46039f'],
+          ['0.22', '#7201a8'],
+          ['0.33', '#9c179e'],
+          ['0.44', '#bd3786'],
+          ['0.55', '#d8576b'],
+          ['0.66', '#ed7953'],
+          ['0.77', '#fb9f3a'],
+          ['0.88', '#fdca26'],
+          ['1.0', '#f0f921'],
+        ],
+        colorbar:{
+          title: "Expected Position Error (ångströms)",
+          titleside: "right",
+          outlinewidth: 0,
+        }
+      }];
+      Plotly.newPlot("pae", data, {title: "Predicted Aligned Error", xaxis: {title: "Scored residue"}, yaxis: {title: "Aligned residue"}}, {displaylogo: false});
+
+      // pLDDT plot
+      var data = [{
+        y: scores.plddt,
+        name: scores.plddt,
+        text: scores.plddt,
+        line: {
+          color: "#2669ff",
+          width: 4,
+        },
+        type: "scatter",
+        mode: "lines",
+      }];
+      Plotly.newPlot("plddt", data, {title: "Predicted lDDT per position", xaxis: {title: "Positions"}, yaxis: {title: "Predicted lDDT"}}, {displaylogo: false});
+    });
+  
+
+  // Cluster plot
+  cluster = {};
+  fetch("/assets/cluster.json")
+  .then(r => r.json())
+  .then(data => {
+    cluster = data;
+    fetch(`/api/list`)
+      .then(r => r.json())
+      .then(proteins => {
+        // calculate distances and get top 5 smallest distances
+        let point = {};
+        let current_id = location.href.split("/").at(-1); //id of protein the page is on
+        let distances = [];
+        for (let i = 0; i < cluster.labels.length; i++) {
+          if (cluster.labels[i] == proteins[current_id].transcript) {
+            point = {label: cluster.labels[i], x: cluster.x[i], y: cluster.y[i]}
+            for (let j = 0; j < cluster.x.length; j++) {
+              const x = cluster.x[j];
+              const y = cluster.y[j];
+              let dist = Math.sqrt((x-point.x)**2 + (y-point.y)**2);
+              if (dist > 0 && dist < 1) { // one is the max distance
+                distances.push([j, dist]);
+              }
+            }
+            break;
+          }
+        }
+
+        // sort distances
+        distances.sort((a,b) => a[1] > b[1] ? 1 : -1);
+
+        // display top 5 most similar proteins, if they exist.
+        let div = document.getElementById("similar-proteins");
+        for (const [index, dist] of distances.slice(0, 5)) {
+          // get protein object from 
+          for (const [id,prot] of Object.entries(proteins)) {
+            if (prot.transcript == cluster.labels[index]) {
+              let a = document.createElement("a");
+              a.href = `/protein/${id}`;
+    
+              let img = document.createElement("img");
+              img.src = `/assets/proteins/${id}/structure.png`;
+              a.appendChild(img);
+              
+              let span = document.createElement("span");
+              a.appendChild(span);
+    
+              let h4 = document.createElement("h4");
+              h4.textContent = prot.transcript;
+              span.appendChild(h4);
+              
+              let species = document.createElement("p");
+              species.innerHTML = `<em>${prot.species}</em>`;
+              span.appendChild(species);
+              
+              let gene = document.createElement("p");
+              gene.textContent = prot.gene;
+              span.appendChild(gene);
+
+              let num_res = document.createElement("p");
+              num_res.textContent = `# Residues: ${prot.protein.length}`;
+              span.appendChild(num_res);
+    
+              div.appendChild(a);
+              break;
+            }
+          }
+        }
+
+        // display plotly cluster
+        var data = [
+          {
+            x: cluster.x,
+            y: cluster.y,
+            type: "scatter",
+            mode: "markers",
+            name: "Other Proteins",
+            text: cluster.labels,
+            marker: {
+              color: "#7f7f7f",
+              opacity: 0.65
+            },
+          },
+          {
+            x: [point.x],
+            y: [point.y],
+            type: "scatter",
+            mode: "markers",
+            name: point.label,
+            text: [point.label],
+            marker: {
+              color: "#548dff",
+              size: 9,
+              opacity: 1,
+              line: {width: 1, color: "#fff"},
+            },
+          },
+        ];
+    
+        Plotly.newPlot("cluster", data, {title: "Protein Clustering by Structural Similarity", yaxis: {title: ""}}, {displaylogo: false});
+        document.getElementById("cluster").on('plotly_click', d => {
+          if (d.event.button == 0) {
+            window.location.href = `/protein/${d.points[0].text}`;
+          } else if (d.event.button == 1) {
+            window.open(`/protein/${d.points[0].text}`);
+          }
+        });
+      });
+  });
+
+  
+  // download functions
+  function downloadPAE() {
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scores.pae));
+    let a = document.createElement('a');
+    a.setAttribute("href",     dataStr);
+    a.setAttribute("download", "PAE.json");
+    document.body.appendChild(a); // required for firefox
+    a.click();
+    a.remove();
+  }
+
+  function downloadPLDDT() {
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scores.plddt));
+    var a = document.createElement('a');
+    a.setAttribute("href",     dataStr);
+    a.setAttribute("download", "pLDDT.json");
+    document.body.appendChild(a); // required for firefox
+    a.click();
+    a.remove();
+  }
+</script>

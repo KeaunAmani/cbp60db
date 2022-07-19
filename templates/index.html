@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Plant CBP60 Protein Family Database</title>
+  <meta name="description" content="A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family."/>
+  <meta property="og:title" content="Plant CBP60 Protein Family Database">
+  <meta property="og:description" content="A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family.">
+  <meta property="og:image" content="/assets/favicon.png">
+  <meta name="theme-color" content="#2669ff">
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta name="viewport" content="width=900px">
+
+  <link rel="stylesheet" href="/css/master.css">
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="shortcut icon" href="/assets/favicon.png">
+  
+  <script src="/js/master.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
+  <script src="https://cdn.rawgit.com/phylocanvas/phylocanvas-quickstart/v2.8.1/phylocanvas-quickstart.js"></script>
+</head>
+
+<body>
+  <nav>
+    <a href="/">
+      <img src="/assets/favicon.png">
+      <p>Plant CBP60 Protein Family Database</p>
+    </a>
+    <div>
+      <a href="#" onclick="scrollTo_(event,'body')">Home</a>
+      <a href="#about" onclick="scrollTo_(event,'#about',60)">About</a>
+      <a href="#database-visualization" onclick="scrollTo_(event,'#database-visualization',60)">Database Visualization</a>
+      <a href="#contact" onclick="scrollTo_(event,'#contact',60)">Contact</a>
+      <a href="/api">API</a>
+    </div>
+  </nav>
+  <header>
+    <div>
+      <h1>A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family.</h1>
+      <h2>
+        <p><strong>{{.NumTranscripts}}</strong> Transcripts</p>
+        <p><strong>{{.NumStructures}}</strong> Structures</p>
+        <p><strong>{{.NumGenes}}</strong> Genes</p>
+        <p><strong>{{.NumSpecies}}</strong> Species</p>
+      </h2>
+      <h3>
+        This database features more than 2,000 proteins of the CBP60 family in the plant kingdom. Deep learning-predicted structures, cDNA/amino acid sequences, species of origin, and access to external protein motif/domain analyses are provided.
+      </h3>
+
+      <span id="search">
+        <img src="/assets/search.svg">
+        <input type="text" placeholder="Search by protein, transcript, or species..." maxlength="64">
+      </span>
+
+      <span style="display: flex; flex-direction: row; gap: 16px; margin-top: 16px;">
+        <a class="btn" href="https://www.biorxiv.org/content/10.1101/2022.07.07.499200v1">View Paper</a>
+        <button class="btn" onclick="scrollTo_(event,'#contact',60)">Feedback</button>
+        <button class="btn" onclick="scrollTo_(event,'#contact',60)">Report Issue</button>
+      </span>
+    </div>
+    <div style="width: 50%;"></div>
+  </header>
+
+  <section id="about">
+    <h2>About</h2>
+    <div>
+      <div>
+        <h3>
+          <p>
+            The CBP60 protein family comprise a diverse set of proteins in plants (<a href="https://doi.org/10.1111/nph.17769">Zheng et al., 2021</a>; <a href="https://doi.org/10.1104%2Fpp.113.227108">Truman et al., 2013</a>; <a href="https://doi.org/10.1074/jbc.m111626200">Reddy et al., 2002</a>). The best characterized members of this family are CBP60g and SARD1, which function as master transcription factors of plant immunity in the model species Arabidopsis thaliana (<a href="https://doi.org/10.1038/ncomms10159">Sun et al., 2015</a>; <a href="https://doi.org/10.1186/1471-2229-12-216">Truman and Glazebrook., 2012</a>).
+          </p>
+        </h3>
+        <br>
+        <ul>
+          <li>
+            <p>CBP60g and SARD1 are redundantly involved in pathogen-induced biosynthesis of central plant defence hormone salicylic acid (<a href="https://doi.org/10.1371/journal.ppat.1000301">Wang et al., 2009</a>; <a href="https://doi.org/10.1073/pnas.1005225107">Zhang et al., 2010</a>; <a href="https://doi.org/10.1111/j.1365-313x.2011.04655.x">Wang et al., 2011</a>).</p>
+          </li>
+          <li>
+            <p>CBP60g and SARD1 also mediate the production of the major systemic immunity-inducing metabolite N-hydroxypipecolic acid (<a href="https://doi.org/10.1111/nph.14780">Sun et al., 2017</a>; <a href="https://doi.org/10.1016/j.molp.2019.10.016">Sun et al., 2019</a>).</p>
+          </li>
+          <li>
+            <p>Recently, it was reported that CBP60g and SARD1 serve as the primary, rate-limiting step controlling the temperature-vulnerability of the plant immune system (<a href="https://doi.org/10.1038/s41586-022-04902-y">Kim et al., 2022</a>).</p>
+          </li>
+          <li>
+            <p>Rational engineering of the plant CBP60 protein family could be a broadly applicable mechanism to safeguard the plant immune system and strengthen its resilience to a warming climate (<a href="https://doi.org/10.1038/s41586-022-04902-y">Kim et al., 2022</a>).</p>
+          </li>
+        </ul>
+      </div>
+
+      <span>
+        <img src="/assets/fig1.png" alt="Regulatory convergence and mutual potentiation of salicylic acid (SA) and N-hydroxypipecolic acid (NHP) biosynthesis and signaling.">
+        <p>CBP60g and SARD1 as master transcription factors regulating basal and systemic immunity in plants. <a href="https://doi.org/10.3389/fpls.2022.841688">Shields et al., 2022; Figure 1.</a></p>
+      </span>
+    </div>
+  </section>
+
+  <section id="database-visualization">
+    <h2>Database Visualization</h2>
+    <h3>Protein Structure Cluster</h3>
+    <p>
+      The following plot is a 2D projection / cluster of all proteins within the database by their predicted structure. Proteins that appear closer together / have smaller euclidean distances between them can be interpreted as being more structurally similar. The primary metric used for clustering is the <a href="https://academic.oup.com/nar/article/33/7/2302/2401364">TM-Align score</a>. For more information on how this projection was created please check out <a href="https://www.biorxiv.org/content/10.1101/2022.07.07.499200v1">our paper</a>. The TM-Align Cluster is available for download below, as well as through the <a href="/api#api">programmatic API.</a>
+    </p>
+    <div id="cluster"></div>
+    <span style="display: flex; flex-direction: row; gap: 16px; margin-top: 16px;">
+      <a class="btn" href="/assets/cluster.json" download="cluster.json">Download TM-Align Cluster</a>
+      <a class="btn" href="https://colab.research.google.com/drive/1LOZY33CSO5-PdJAdDApyPlfxUu4DHjcW?usp=sharing" target="_blank">Create Your Own</a>
+    </span>
+    <br>
+    <br>
+    <h3>Phylogenetic Tree</h3>
+    <p>
+      The phylogenetic tree below was created within <a href="https://www.megasoftware.net/">MEGA</a> using the <a href="https://en.wikipedia.org/wiki/MUSCLE_(alignment_software)">MUltiple Sequence Comparison by Log-Expectation (MUSCLE)</a> alignment algorithm, as well as the <a href="http://www.microbesonline.org/fasttree/#Install">FastTree phylogenetic tree creator.</a> MUSCLE was used to create an alignment of all the AA sequences available within the database in the format of a FASTA file. This FASTA alignment was then exported and used by FastTree to produce the phylogenetic tree below in the Newick tree format. The visualization tool used is <a href="https://phylocanvas.org/docs">Phylocanvas.</a> Both the FASTA alignment and the Newick tree are available for download below, as well as through the <a href="/api#api">programmatic API.</a>
+    </p>
+    <div id="phylogenetic-tree"></div>
+
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <span style="display: flex; flex-direction: row; gap: 12px;">
+        <a class="btn" href="/assets/alignment.fas" download="alignment.fas">Download FASTA Alignment</a>
+        <a class="btn" href="/assets/phylogenetic.tree" download="phylogenetic.tree">Download Newick Tree</a>
+      </span>
+  
+      <span style="display: flex; flex-direction: row; gap: 12px;">
+        <button class="btn" onclick="changeTree('rectangular', alignLabels=false)">Rectangular</button>
+        <button class="btn" onclick="changeTree('circular')">Circular</button>
+        <button class="btn" onclick="changeTree('diagonal')">Diagonal</button>
+        <button class="btn" onclick="changeTree('hierarchical', alignLabels=false)">Hierarchical</button>
+      </span>
+    </div>
+    <script>
+      tree = window.Phylocanvas.createTree("phylogenetic-tree");
+      tree.on('updated', ({ property, nodeIds }) => {
+        if (property === 'selected') {
+          if (nodeIds.length == 1) {
+            window.open(`/protein/${nodeIds[0].replace('__d__','.').replace('__s__',':')}`);
+          }
+        }
+      });
+      fetch("/assets/phylogenetic.tree")
+        .then(r => r.text())
+        .then(newick => {
+          tree.setTreeType("diagonal");
+          tree.load(newick);
+        })
+      
+      function changeTree(type, assignLabels=true) {
+        tree.setTreeType(type); //can be radial, rectangular, circular, diagonal, or hierarchical.
+        tree.alignLabels = assignLabels;
+        tree.draw();
+      }
+    </script>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <h3>Department of Biology, Wilfrid Laurier University.</h3>
+    <div class="items">
+      <img src="/assets/home.svg">
+      <p>75 University Avenue West, Waterloo, ON N2L 3C5</p>
+      <img src="/assets/email.svg">
+      <p id="email">dcastroverde(at)wlu(dot)ca</p>
+      <img src="/assets/phone.svg">
+      <p>519.884.0710 x3552</p>
+      <img src="/assets/web.svg">
+      <p><a href="https://castroverdelab.ca/">https://castroverdelab.ca/</a></p>
+      <img src="/assets/code.svg">
+      <p><a href="https://github.com/KeaunAmani/cbp60db">Source Code (written by Keaun Amani)</a></p>
+    </div>
+    <script>
+      document.getElementById("email").textContent = document.getElementById("email").textContent.replace("(at)","@").replace("(dot)",".");
+    </script>
+  </section>
+
+  <footer>
+    <p>&copy; 2022 All Rights Reserved.</p>
+  </footer>
+</body>
+</html>
+
+<script>
+  fetch("/assets/cluster.json")
+    .then(r => r.json())
+    .then(data => {
+      var data = [{
+        x: data.x,
+        y: data.y,
+        type: "scatter",
+        name: data.labels,
+        text: data.labels,
+        mode: "markers",
+        marker: {
+          color: data.sizes,
+          colorscale: [
+            ['0.0', '#0d0887'],
+            ['0.11', '#46039f'],
+            ['0.22', '#7201a8'],
+            ['0.33', '#9c179e'],
+            ['0.44', '#bd3786'],
+            ['0.55', '#d8576b'],
+            ['0.66', '#ed7953'],
+            ['0.77', '#fb9f3a'],
+            ['0.88', '#fdca26'],
+            ['1.0', '#f0f921'],
+          ],
+          colorbar:{
+            title: "# Residues",
+            outlinewidth: 0,
+          }
+        },
+      }];
+
+      Plotly.newPlot("cluster", data, {title: "Protein Clustering by Structural Similarity", yaxis: {title: ""}}, {displaylogo: false});
+      document.getElementById("cluster").on('plotly_click', d => {
+        if (d.event.button == 0) {
+          window.location.href = `/protein/${d.points[0].text}`;
+        } else if (d.event.button == 1) {
+          window.open(`/protein/${d.points[0].text}`);
+        }
+      });
+    });
+  </script>

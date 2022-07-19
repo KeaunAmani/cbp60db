@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Plant CBP60 Protein Family Database</title>
+  <meta name="description" content="A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family."/>
+  <meta property="og:title" content="Plant CBP60 Protein Family Database">
+  <meta property="og:description" content="A Plant Kingdom-Wide Structural Database of the CBP60 Protein Family.">
+  <meta property="og:image" content="/assets/favicon.png">
+  <meta name="theme-color" content="#2669ff">
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta name="viewport" content="width=900px">
+
+  <link rel="stylesheet" href="/css/master.css">
+  <link rel="stylesheet" href="/css/search.css">
+  <link rel="shortcut icon" href="/assets/favicon.png">
+  
+  <script src="/js/master.js"></script>
+  <!-- TODO: Add a cluster map that highlights all the proteins in the search result (“you are here” type of thing). -->
+</head>
+
+
+<body>
+  <nav>
+    <a href="/">
+      <img src="/assets/favicon.png">
+      <p>Plant CBP60 Protein Family Database</p>
+    </a>
+    <div>
+      <a href="/">Home</a>
+      <a href="/#about">About</a>
+      <a href="/#database-visualization">Database Visualization</a>
+      <a href="/#contact">Contact</a>
+      <a href="/api">API</a>
+    </div>
+  </nav>
+  <header>
+    <div>
+      <h3>Search for other proteins</h3>
+      <span id="search">
+        <img src="/assets/search.svg">
+        <input type="text" placeholder="Search by protein, transcript, or species..." maxlength="64" value="{{.Query}}">
+      </span>
+    </div>
+    <div style="width: 50%;"></div>
+  </header>
+
+  <section style="min-height: calc(100vh - 324px);">
+    <h2>Found {{len .Data}} search results.</h2>
+
+    <div class="results">
+      {{range $val := .Data}}
+        <a href="/protein/{{$val.ID}}">
+          <img src="/assets/proteins/{{$val.ID}}/structure.png">
+          <h4>{{$val.Transcript}}</h4>
+          <p>Gene: <span style="font-weight: 500">{{$val.Gene}}</span></p>
+          <p>Species: <span style="font-weight: 500"><em>{{$val.Species}}</em></span></p>
+          <p>cDNA Length: <span style="font-weight: 500">{{ len $val.CDNA}} nt</span></p>
+          <p># Residues: <span style="font-weight: 500">{{ len $val.Protein}}</span></p>
+        </a>
+      {{end}}
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2022 All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

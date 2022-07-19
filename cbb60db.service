@@ -1,0 +1,15 @@
+[Unit]
+Description=Plant CBP60 Protein Family Database backend service
+
+[Service]
+Type=simple
+ExecStart=/path/to/project_folder/main #TODO
+WorkingDirectory=/path/to/project_folder #TODO
+Restart=always
+RestartSec=30s
+User=http #TODO
+Group=http #TODO
+StandardOutput=file:/var/log/TODO #TODO
+
+[Install]
+WantedBy=multi-user.target
