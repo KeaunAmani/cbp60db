@@ -3,7 +3,7 @@
 
 This database features more than 2,000 proteins of the CBP60 family in the plant kingdom. Deep learning-predicted structures, cDNA/amino acid sequences, species of origin, and access to external protein motif/domain analyses are provided.
 
-If you find the contents of our database or the software useful please cite [our biorxiv preprint](https://www.biorxiv.org/content/10.1101/2022.07.07.499200v1).
+If you find the contents of our database or the software useful please cite our [biorxiv preprint](https://www.biorxiv.org/content/10.1101/2022.07.07.499200v1).
 
 ### Important Links:
 - [Link to live web application](https://cbp60db.wlu.ca/)
