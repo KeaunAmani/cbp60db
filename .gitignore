@@ -1,0 +1,6 @@
+# classic garbage
+__pycache__/
+.vscode/
+
+Processing_Related/
+tm-matrix.json

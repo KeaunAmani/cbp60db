@@ -13,12 +13,12 @@
 
   <link rel="stylesheet" href="/css/master.css">
   <link rel="stylesheet" href="/css/protein.css">
-  <link rel="stylesheet" type="text/css" href="https://www.ebi.ac.uk/pdbe/pdb-component-library/css/pdbe-molstar-light-1.2.0.css">
+  <link rel="stylesheet" href="/css/pdbe-molstar-light-1.2.0.css">
   <link rel="shortcut icon" href="/assets/favicon.png">
   
   <script src="/js/master.js"></script>
-  <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
-  <script type="text/javascript" src="https://www.ebi.ac.uk/pdbe/pdb-component-library/js/pdbe-molstar-plugin-1.2.0.js"></script>
+  <script src="/js/plotly-2.11.1.min.js"></script>
+  <script src="/js/pdbe-molstar-plugin-1.2.0.js"></script>
 </head>
 
 
@@ -33,7 +33,7 @@
       <a href="/#about">About</a>
       <a href="/#database-visualization">Database Visualization</a>
       <a href="/#contact">Contact</a>
-      <a href="/#api">API</a>
+      <a href="/api">API</a>
     </div>
   </nav>
   <header>
@@ -93,7 +93,7 @@
 
       <div>
         <p>Gene</p>
-        <p>{{.Gene}}</p>
+        <p>{{.Gene}} <a href="https://www.gramene.org/?filters={%22status%22:%22init%22,%22operation%22:%22AND%22,%22negate%22:false,%22marked%22:true,%22leftIdx%22:0,%22rightIdx%22:3,%22children%22:[{%22fq_field%22:%22id%22,%22fq_value%22:%22{{.Gene}}%22,%22name%22:%22{{.Gene}}%22,%22category%22:%22Gene%22,%22leftIdx%22:1,%22rightIdx%22:2,%22negate%22:false,%22showMenu%22:true,%22marked%22:true}],%22showMarked%22:true,%22showMenu%22:false,%22moveCopyMode%22:%22%22,%22searchOffset%22:0,%22rows%22:20}&genomes=">(see on gramene)</a></p>
         <p>Transcript</p>
         <p>{{.Transcript}}</p>
         <p>Source organism</p>
@@ -159,10 +159,13 @@
 
 
 <script>
+  //id of protein the page is on
+  let current_id = location.href.split("/").at(-1);
+
   // PDBe Molstar Stuff
   let viewerInstance = new PDBeMolstarPlugin();
   let options = {
-    customData: {url: "/assets/proteins/"+location.href.split("/").at(-1)+"/structure.cif", format: "cif"},
+    customData: {url: "/assets/proteins/"+current_id+"/structure.cif", format: "cif"},
     alphafoldView: true,
     visualStyle: "cartoon",
     bgColor: {r:255, g:255, b:255},
@@ -173,7 +176,7 @@
 
   // download scores data and populate plots
   scores = null;
-  fetch(`/assets/proteins/${location.href.split("/").at(-1)}/scores.json`)
+  fetch(`/assets/proteins/${current_id}/scores.json`)
     .then(r => r.json())
     .then(d => {
       scores = d;
@@ -233,7 +236,6 @@
       .then(proteins => {
         // calculate distances and get top 5 smallest distances
         let point = {};
-        let current_id = location.href.split("/").at(-1); //id of protein the page is on
         let distances = [];
         for (let i = 0; i < cluster.labels.length; i++) {
           if (cluster.labels[i] == proteins[current_id].transcript) {
@@ -259,33 +261,37 @@
           // get protein object from 
           for (const [id,prot] of Object.entries(proteins)) {
             if (prot.transcript == cluster.labels[index]) {
-              let a = document.createElement("a");
-              a.href = `/protein/${id}`;
+              fetch(`/api/tmscore/${current_id}/${id}`)
+                .then(r => r.json())
+                .then(tm_score => {
+                  let a = document.createElement("a");
+                  a.href = `/protein/${id}`;
+        
+                  let img = document.createElement("img");
+                  img.src = `/assets/proteins/${id}/structure.png`;
+                  a.appendChild(img);
+                  
+                  let span = document.createElement("span");
+                  a.appendChild(span);
+        
+                  let h4 = document.createElement("h4");
+                  h4.textContent = prot.transcript;
+                  span.appendChild(h4);
+                  
+                  let species = document.createElement("p");
+                  species.innerHTML = `<em>${prot.species}</em>`;
+                  span.appendChild(species);
+                  
+                  let gene = document.createElement("p");
+                  gene.textContent = prot.gene;
+                  span.appendChild(gene);
     
-              let img = document.createElement("img");
-              img.src = `/assets/proteins/${id}/structure.png`;
-              a.appendChild(img);
-              
-              let span = document.createElement("span");
-              a.appendChild(span);
-    
-              let h4 = document.createElement("h4");
-              h4.textContent = prot.transcript;
-              span.appendChild(h4);
-              
-              let species = document.createElement("p");
-              species.innerHTML = `<em>${prot.species}</em>`;
-              span.appendChild(species);
-              
-              let gene = document.createElement("p");
-              gene.textContent = prot.gene;
-              span.appendChild(gene);
-
-              let num_res = document.createElement("p");
-              num_res.textContent = `# Residues: ${prot.protein.length}`;
-              span.appendChild(num_res);
-    
-              div.appendChild(a);
+                  let num_res = document.createElement("p");
+                  num_res.textContent = `# Residues: ${prot.protein.length} \xa0\xa0\xa0 TM-Align Score: ${tm_score}`;
+                  span.appendChild(num_res);
+        
+                  div.appendChild(a);
+                });
               break;
             }
           }

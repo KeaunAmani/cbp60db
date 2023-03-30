@@ -14,6 +14,7 @@ import (
 // STRUCT AND GLOBAL DECLARATIONS
 // -------------------------------------------------
 var proteins map[string]ProteinData
+var tmScoreMatrix map[string]map[string]float32
 var transcripts_table map[string]string = map[string]string{} //uses transcripts as keys and hash_ids as values
 var stats DBStats
 
@@ -131,6 +132,22 @@ func proteinInfoAPI(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func tmScoreAPI(w http.ResponseWriter, r *http.Request) {
+	tmp := strings.Split(r.URL.Path, "/")
+	protein1 := tmp[len(tmp)-1]
+	protein2 := tmp[len(tmp)-2]
+	fmt.Println("[+] Received connection to TM-SCORE API (" + protein1 + ", " + protein2 + ")")
+
+	if output, ok := tmScoreMatrix[protein1][protein2]; ok {
+		data, _ := json.Marshal(&output)
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(data)
+	} else {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Error: Invalid proteins supplied")
+	}
+}
+
 // -------------------------------------------------
 // MAIN
 // -------------------------------------------------
@@ -141,6 +158,13 @@ func main() {
 		log.Fatal("Error: Cannot read proteins.json", err)
 	}
 	json.Unmarshal(data, &proteins)
+
+	// load TM-Score Matrix
+	data, err = ioutil.ReadFile("./tm-matrix.json")
+	if err != nil {
+		log.Fatal("Error: Cannot read tm-matrix.json", err)
+	}
+	json.Unmarshal(data, &tmScoreMatrix)
 
 	// create transcripts look up table
 	for id, protein := range proteins {
@@ -181,7 +205,9 @@ func main() {
 	// API endpoints
 	http.HandleFunc("/api/protein/", proteinInfoAPI)
 	http.HandleFunc("/api/list", listProteinsAPI)
+	http.HandleFunc("/api/tmscore/", tmScoreAPI)
 
 	// Listen
+	fmt.Println("[*] Starting server live at http://127.0.01:8002")
 	http.ListenAndServe(":8002", nil)
 }

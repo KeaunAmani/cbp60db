@@ -65,19 +65,14 @@ section .info > div {
 
 .plot-container {
   margin: 50px 0px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 .plot-container > div {
-  min-width: 580px;
-  max-width: calc(50% - 100px);
   width: 100%;
-  height: auto;
-  aspect-ratio: 1 / 1;
+  min-height: 520px;
+  height: 100%;
 }
 .plot-container .main-svg {
   border-radius: 4px;

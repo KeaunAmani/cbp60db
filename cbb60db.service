@@ -3,13 +3,13 @@ Description=Plant CBP60 Protein Family Database backend service
 
 [Service]
 Type=simple
-ExecStart=/path/to/project_folder/main #TODO
-WorkingDirectory=/path/to/project_folder #TODO
+ExecStart=/path/to/project_folder/main    #TODO: The path to the compiled go binary to execute
+WorkingDirectory=/path/to/project_folder  #TODO: The repository directory / directory containing the above binary
 Restart=always
 RestartSec=30s
-User=http #TODO
-Group=http #TODO
-StandardOutput=file:/var/log/TODO #TODO
+User=http                                 #TODO: The linux user to execute the process under
+Group=http                                #TODO: The linux group to execute the process under
+StandardOutput=file:/var/log/cbp60db      #TODO: Path for output log file from daemon (can optionally be set to /dev/null)
 
 [Install]
 WantedBy=multi-user.target
