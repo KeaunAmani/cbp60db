@@ -19,6 +19,9 @@ git clone https://github.com/KeaunAmani/cbp60db.git
 # go into main directory
 cd cbp60db
 
+# extract the TM-Align matrix
+tar -xf tm-matrix.json.tar.bz2
+
 # build binary
 go build main.go
 
